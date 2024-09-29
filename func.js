@@ -118,5 +118,26 @@ function curry(func) {
 }
 
 
+function mycloneDeep(obj, hash = new WeakMap()) {
+    if (obj === 'null' || typeof obj !== 'object') return obj;
+    let cloneObj;
+    if (Array.isArray(obj)) {
+        cloneObj = [];
+    }
+
+    cloneObj = {};
+
+    hash.set(obj, cloneObj);
+
+    for (let k in obj) {
+        if (obj.hasOwnProperty(k)) {
+            cloneObj[key] = deepClone(obj[key], hash);
+        }
+    }
+
+    return cloneObj;
+}
+
+
 
 
