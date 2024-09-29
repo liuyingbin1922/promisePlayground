@@ -117,6 +117,16 @@ function curry(func) {
     }
 }
 
+function _curry (func) {
+    return function curryfunc(...args) {
+        if(args.length >= func.length) {
+            return func.apply(this,args);
+        }else {
+            return curryfunc.apply(this, args.concat(...args));
+        }
+    }
+}
+
 
 function mycloneDeep(obj, hash = new WeakMap()) {
     if (obj === 'null' || typeof obj !== 'object') return obj;
@@ -139,5 +149,66 @@ function mycloneDeep(obj, hash = new WeakMap()) {
 }
 
 
+function mycurry (func) {
+    if(typeof func !== 'function') {
+        throw new Error('error');
+    }
+    let len = func.length;
+    let args = [];
+    function com(...arg) {
+        // 合并函数的所有参数；
+        args = args.concat(arg);
+        if(args.length >= len) {
+            let res = func(...args);
+            args = []
+            return res;
+        }else {
+            return com;
+        }
+    }
+    com;
+}
+
+/**
+ * @description 惰性函数curry；
+ * @param {} a 
+ * @param {*} b 
+ * @param {*} c 
+ * @param {*} d 
+ * @param {*} e 
+ * @returns 
+ */
 
 
+function slowcurry(func)  {
+    if(typeof func !== 'function') {
+        return '';
+    }
+
+    const combine = function(...arg) {
+        return args.concat(arg);
+    }
+
+    combine.sumOf = function(...arg) {
+        args = args.concat(arg);
+        if(args.length >= len) {
+            let res = func(...args);
+            args = []
+            return res;
+        }else {
+            return com;
+        }
+    }
+
+    return combine;
+
+}
+
+
+function add(a,b,c,d,e) {
+    return a + b + c + d + e;
+}
+
+let curAdd = mycurry(add);
+
+console.log('curAdd', curAdd);
