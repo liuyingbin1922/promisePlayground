@@ -25,3 +25,45 @@ const versionArr = ['1.1.1.1', '2.0', '1.2.1', '2.1.1'];
 versionArr.sort((a,b) => compareVersion(a, b));
 
 console.log('compareversion versionArr', versionArr);
+
+
+/**
+ * @description 解析包依赖反馈的顺序;
+ */
+
+function resolveDependencies(dependencies) {
+    const result = [];
+
+    const visited = new Set();
+    
+    const dfs = (pkg) => {
+        if (visited.has(pkg)) return ;
+
+        visited.add(pkg);
+
+        const deps = dependencies[pkg] || [];
+
+        for (const dep of deps) {
+            dfs(dep);
+        }
+        result.push(pkg);
+    }
+
+    for (
+        let i in dependencies
+    ) {
+        dfs(i);
+    }
+
+    return result;
+}
+
+// 测试
+const dependencies = {
+    'A': ['B', 'C'],
+    'B': ['D'],
+    'C': ['D'],
+    'D': []
+};
+
+console.log(resolveDependencies(dependencies));
