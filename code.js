@@ -70,7 +70,7 @@ const sortK = (nums)  => {
 /**
  * @description 排序前K个元素；
  */
-const sortFirstK = (nums, k) => {
+const sortFirstK1 = (nums, k) => {
     const arr = [...nums];
     arr.sort();
     const result = [];
@@ -89,3 +89,62 @@ const sortFirstK = (nums, k) => {
     return result;
 
 } 
+
+/**
+ * @description add(1)(2)(3) 闭包实现;
+ */
+function myAdd  (num) {
+    let sum = num;
+    function add(num) {
+        sum += num;
+        return add;
+    }
+    add.toString = function() {
+        return sum;
+    }
+    return add;
+}
+
+function _add(num) {
+    myAdd.toString = function() {
+        return myAdd(num);
+    }
+}
+
+// console.log('myAdd::', _add(1)(2)(3));
+
+
+/**
+ * @description 判断是否是回文字符串/回文数;
+ */
+function isCycle(str) {
+    const arr = str.split('');
+    let left = 0;
+    let right = arr.length - 1;
+
+    if (arr.length % 2 > 0) {
+        const mid = arr.length / 2;
+        while(right > mid && left < mid) {
+            if (arr[left] !== arr[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+    }else {
+        while(left < right) {
+            if (arr[left] !== arr[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+    }
+
+   
+
+    return true
+}
+
+
+console.log('isCycle', isCycle('sddse'));
