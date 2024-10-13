@@ -111,7 +111,43 @@ function _add(num) {
     }
 }
 
-// console.log('myAdd::', _add(1)(2)(3));
+
+function addFunc(num) {
+    const add2 = (num2) => {
+        num = num + num2;
+        add2.toString = () => num;
+        return add2;
+    }
+    return add2;
+}
+
+console.log('addFunc::', addFunc(1)(2)(3).toString());
+
+
+const addParamsFunc = (...args) => args.reduce((a,b) => a + b, 0);
+
+function mycurrying(fn) {
+
+    let args = [];
+    return function temp (...newArgs) {
+        if (newArgs.length) {
+            args = [
+                ...args,
+                ...newArgs
+            ]
+            return temp
+        } else {
+            let val = fn.apply(this, args)
+            args = [] //保证再次调用时清空
+            return val
+        }
+    }
+
+}
+
+const addParamsFuncWrapper = mycurrying(addParamsFunc);
+
+console.log('addParamsFuncWrapper', addParamsFuncWrapper(1)(2)(3,4)());
 
 
 /**
@@ -148,3 +184,21 @@ function isCycle(str) {
 
 
 console.log('isCycle', isCycle('sddse'));
+
+
+// 限定长度；
+/**
+ * @description 函数curry 实现；
+ */
+function practiceCurry (args) {
+    function add(num) {
+        args = num + args;
+        return add;
+    }
+    add.toString = function() {
+        return args;
+    }
+    return add;
+}
+
+console.log('practiceCurry', practiceCurry(1)(2)(3)(1).toString());
